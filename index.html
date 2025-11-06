@@ -1,827 +1,567 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en" class="h-full">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SelfHelp - By kandamas</title>
-  <!-- Load Tailwind CSS from CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    // Set up Tailwind dark mode
-    tailwind.config = {
-      darkMode: 'class', // 'class' enables manual dark mode toggling
-      theme: {
-        extend: {
-          fontFamily: {
-            // Use a modern, clean font stack
-            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-          },
-        },
-      },
-    };
-  </script>
-  <!-- Use Inter font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    /* Apply the Inter font */
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-    /* Simple page transition */
-    .page {
-      display: none; /* Hide all pages by default */
-    }
-    .page.active {
-      display: block; /* Show only the active page */
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhakti Viral - Devotional App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            color-scheme: light dark;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        .screen {
+            display: none;
+        }
+        .screen.active {
+            display: block;
+        }
+        #mini-player {
+            transition: transform 0.3s ease-in-out;
+        }
+        #mini-player.active {
+            transform: translateY(0);
+        }
+        #wallpaper-modal {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .lucide {
+            width: 24px;
+            height: 24px;
+            stroke-width: 2;
+        }
+        .nav-btn .lucide {
+             width: 28px;
+             height: 28px;
+        }
+        .settings-icon .lucide {
+            width: 22px;
+            height: 22px;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
-  <div id="app-container">
-    
-    <!-- Page Content -->
-    <main>
-      
-      <!-- 1. Home Page -->
-      <div id="page-home" class="page p-4 pb-24 max-w-lg mx-auto">
-        <!-- Header -->
-        <div class="flex items-center space-x-3 mb-6">
-          <!-- AppLogo SVG -->
-          <svg
-            class="w-12 h-12 text-indigo-600 dark:text-indigo-400"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            ></path>
-            <path
-              d="M15.5 8.5C15.5 9.88071 14.3807 11 13 11C11.6193 11 10.5 9.88071 10.5 8.5C10.5 7.11929 11.6193 6 13 6C14.3807 6 15.5 7.11929 15.5 8.5Z"
-              stroke="currentColor"
-              stroke-width="2"
-            ></path>
-            <path
-              d="M8.5 18C8.5 16.067 10.067 14.5 12 14.5C13.933 14.5 15.5 16.067 15.5 18"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            ></path>
-          </svg>
-          <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">SelfHelp - CS</h1>
-            <p class="text-gray-600 dark:text-gray-400">Kandamas Helper</p>
-          </div>
-        </div>
+<body class="bg-slate-50 dark:bg-slate-950 h-full flex flex-col">
 
-        <!-- Phone Input -->
-        <div class="mb-4">
-          <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Client's Phone Number
-          </label>
-          <div class="flex rounded-lg shadow-sm">
-            <select
-              id="country-code"
-              class="block w-28 rounded-l-lg border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500"
-            >
-              <!-- Options will be populated by JS -->
-            </select>
-            <input
-              type="tel"
-              id="phone-number"
-              placeholder="8884397315"
-              class="flex-1 block w-full rounded-none rounded-r-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 dark:text-white focus:ring-indigo-500 focus:border-indigo-500 p-3"
-            />
-          </div>
-        </div>
-
-        <!-- Category Selector -->
-        <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Client Category
-          </label>
-          <div class="space-y-3">
-            <!-- Category 1 -->
-            <button
-              id="category-fresh"
-              data-category="fresh"
-              class="category-button w-full p-4 border rounded-lg text-left transition-all duration-200 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
-            >
-              <div class="flex items-center">
-                <div class="flex-shrink-0">
-                  <div
-                    class="radio-icon w-5 h-5 rounded-full border-2 flex items-center justify-center border-gray-400"
-                  >
-                    <div class="radio-dot w-2 h-2 bg-white rounded-full hidden"></div>
-                  </div>
-                </div>
-                <div class="ml-3">
-                  <p class="font-semibold text-gray-900 dark:text-white">Category 1: Fresh Client</p>
-                  <p class="text-sm text-gray-600 dark:text-gray-400">No website or app. Pitch them a new build.</p>
-                </div>
-              </div>
-            </button>
-            <!-- Category 2 -->
-            <button
-              id="category-errors"
-              data-category="errors"
-              class="category-button w-full p-4 border rounded-lg text-left transition-all duration-200 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
-            >
-              <div class="flex items-center">
-                <div class="flex-shrink-0">
-                  <div
-                    class="radio-icon w-5 h-5 rounded-full border-2 flex items-center justify-center border-gray-400"
-                  >
-                    <div class="radio-dot w-2 h-2 bg-white rounded-full hidden"></div>
-                  </div>
-                </div>
-                <div class="ml-3">
-                  <p class="font-semibold text-gray-900 dark:text-white">Category 2: Error-Filled Site</p>
-                  <p class="text-sm text-gray-600 dark:text-gray-400">They have a bad website. Pitch them a rebuild.</p>
-                </div>
-              </div>
-            </button>
-            <!-- Category 3 -->
-            <button
-              id="category-pro"
-              data-category="pro"
-              class="category-button w-full p-4 border rounded-lg text-left transition-all duration-200 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
-            >
-              <div class="flex items-center">
-                <div class="flex-shrink-0">
-                  <div
-                    class="radio-icon w-5 h-5 rounded-full border-2 flex items-center justify-center border-gray-400"
-                  >
-                    <div class="radio-dot w-2 h-2 bg-white rounded-full hidden"></div>
-                  </div>
-                </div>
-                <div class="ml-3">
-                  <p class="font-semibold text-gray-900 dark:text-white">Category 3: Pro Website</p>
-                  <p class="text-sm text-gray-600 dark:text-gray-400">They have a good site. Pitch them a mobile app.</p>
-                </div>
-              </div>
-            </button>
-          </div>
-        </div>
-
-        <!-- Error Message (hidden by default) -->
-        <div id="error-message" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4 hidden" role="alert">
-          <span id="error-text" class="block sm:inline"></span>
-        </div>
-
-        <!-- Call to Action -->
-        <button
-          id="go-button"
-          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-4 rounded-lg shadow-lg transition duration-300 ease-in-out text-lg"
-        >
-          Go to WhatsApp
-        </button>
-
-        <!-- Important Note -->
-        <div class="mt-4 p-3 bg-yellow-100 dark:bg-yellow-800 rounded-lg border border-yellow-300 dark:border-yellow-700">
-          <p class="text-sm text-yellow-800 dark:text-yellow-100">
-            <span class="font-bold">Important:</span> Papu Devate Kandama Whatsapp Open admele Img Attach madi send madbeku Done</span>
-            before sending the message.
-          </p>
-        </div>
-      </div>
-      
-      <!-- 2. You Page -->
-      <div id="page-you" class="page p-4 pb-24 max-w-lg mx-auto">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">You</h1>
-
-        <ul class="divide-y divide-gray-200 dark:divide-gray-700">
-          <!-- Theme Toggle -->
-          <li class="py-4">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-lg font-medium text-gray-900 dark:text-white">Theme</p>
-                <p id="theme-status" class="text-sm text-gray-600 dark:text-gray-400">
-                  Currently: Light Mode
-                </p>
-              </div>
-              <button
-                id="theme-toggle"
-                aria-label="Toggle theme"
-                class="relative inline-flex items-center h-6 rounded-full w-11 transition-colors bg-gray-200 dark:bg-gray-700"
-              >
-                <span
-                  id="theme-toggle-knob"
-                  class="translate-x-1 inline-block w-4 h-4 transform bg-white dark:bg-gray-400 rounded-full transition-transform flex items-center justify-center"
-                >
-                  <!-- SunIcon -->
-                  <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-6.364-.386l1.591-1.591M3 12h2.25m.386-6.364l1.591 1.591M12 12a2.25 2.25 0 00-2.25 2.25c0 1.38.82 2.555 2.002 3.032A2.25 2.25 0 0012 12z" />
-                  </svg>
-                  <!-- MoonIcon (hidden by default) -->
-                  <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 hidden">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25c0 5.385 4.365 9.75 9.75 9.75 2.671 0 5.1-1.006 6.962-2.648z" />
-                  </svg>
-                </span>
-              </button>
-            </div>
-          </li>
-
-          <!-- New Professional Settings List -->
-          <!-- Play Store -->
-          <li class="py-4">
-            <a 
-              href="https://play.google.com/store/apps/details?id=com.shridhargroupofcompany" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              class="hover:bg-gray-50 dark:hover:bg-gray-700 p-2 -m-2 rounded-lg flex"
-            >
-              <div class="flex items-center justify-between w-full">
-                <div class="flex items-center space-x-3">
-                  <!-- StarIcon -->
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 dark:text-gray-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.31h5.418c.259 0 .37.338.14.505l-4.4 3.19a.562.562 0 00-.162.632l1.7 4.896c.07.206-.201.384-.383.254l-4.52-3.298a.563.563 0 00-.636 0l-4.52 3.298c-.182.13-.453-.048-.383-.254l1.7-4.896a.562.562 0 00-.162-.632l-4.4-3.19c-.23-.166-.118-.505.14-.505h5.418a.563.563 0 00.475-.31l2.125-5.11z" />
-                  </svg>
-                  <p class="text-lg font-medium text-gray-900 dark:text-white">Our App on Play Store</p>
-                </div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-gray-400">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
-              </div>
-            </a>
-          </li>
-          <!-- Share -->
-          <li class="py-4">
-            <button 
-              id="share-button" 
-              class="w-full hover:bg-gray-50 dark:hover:bg-gray-700 p-2 -m-2 rounded-lg flex"
-            >
-              <div class="flex items-center justify-between w-full">
-                <div class="flex items-center space-x-3">
-                  <!-- ShareIcon -->
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 dark:text-gray-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.195.025.383.052.57.082a2.25 2.25 0 012.288 2.288c-.03.187-.057.375-.082.57m0 0a2.25 2.25 0 002.186 0m0-2.186c.195-.025.383-.052.57-.082a2.25 2.25 0 012.288-2.288c.03-.187.057-.375.082-.57m0 0a2.25 2.25 0 00-2.186 0m-2.186 0a2.25 2.25 0 000 2.186m0 0c-.195.025-.383.052-.57.082a2.25 2.25 0 01-2.288-2.288c.03-.187.057-.375.082-.57m0 0a2.25 2.25 0 002.186 0" />
-                  </svg>
-                  <p class="text-lg font-medium text-gray-900 dark:text-white">Share This App</p>
-                </div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-gray-400">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
-              </div>
-            </button>
-          </li>
-          <!-- Help -->
-          <li class="py-4">
-            <button 
-              id="help-button"
-              data-page="help"
-              class="nav-subpage-button w-full hover:bg-gray-50 dark:hover:bg-gray-700 p-2 -m-2 rounded-lg flex"
-            >
-              <div class="flex items-center justify-between w-full">
-                <div class="flex items-center space-x-3">
-                  <!-- HelpIcon -->
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 dark:text-gray-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                  </svg>
-                  <p class="text-lg font-medium text-gray-900 dark:text-white">Help & Support</p>
-                </div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-gray-400">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
-              </div>
-            </button>
-          </li>
-          <!-- Privacy -->
-          <li class="py-4">
-            <button 
-              id="privacy-button"
-              data-page="privacy"
-              class="nav-subpage-button w-full hover:bg-gray-50 dark:hover:bg-gray-700 p-2 -m-2 rounded-lg flex"
-            >
-              <div class="flex items-center justify-between w-full">
-                <div class="flex items-center space-x-3">
-                  <!-- PrivacyIcon -->
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 dark:text-gray-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.333 9-6.03 9-11.623 0-1.604-.368-3.112-1.021-4.498A11.959 11.959 0 0112 2.714z" />
-                  </svg>
-                  <p class="text-lg font-medium text-gray-900 dark:text-white">Privacy Policy</p>
-                </div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-gray-400">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
-              </div>
-            </button>
-          </li>
-          <!-- About -->
-          <li class="py-4">
-            <button 
-              id="about-button"
-              data-page="about"
-              class="nav-subpage-button w-full hover:bg-gray-50 dark:hover:bg-gray-700 p-2 -m-2 rounded-lg flex"
-            >
-              <div class="flex items-center justify-between w-full">
-                <div class="flex items-center space-x-3">
-                  <!-- InfoIcon -->
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 dark:text-gray-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                  </svg>
-                  <p class="text-lg font-medium text-gray-900 dark:text-white">About Shridhar Group</p>
-                </div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-gray-400">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
-              </div>
-            </button>
-          </li>
-        </ul>
-      </div>
-
-      <!-- 3. About Page -->
-      <div id="page-about" class="page p-4 max-w-lg mx-auto">
-        <!-- Sub-page Header -->
-        <header class="relative flex items-center justify-center mb-6">
-          <button
-            class="nav-back-button absolute left-0 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
-            aria-label="Go back"
-          >
-            <!-- BackIcon -->
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-900 dark:text-white">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
-          </button>
-          <h1 class="text-xl font-bold text-gray-900 dark:text-white">About Shridhar Group</h1>
-        </header>
-
-        <!-- Page Content -->
-        <div class="space-y-4 text-gray-800 dark:text-gray-200">
-          <div class="space-y-6">
-            <div>
-              <h2 class="text-lg font-semibold mb-2 text-indigo-600 dark:text-indigo-400">Who We Are</h2>
-              <p>
-                Shridhar Group of Company is a dynamic and innovative technology partner dedicated to helping businesses thrive in the digital age. We aren't just developers; we are architects of success, crafting bespoke digital solutions that build strong foundations for growth.
-              </p>
-            </div>
-            
-            <div>
-              <h2 class="text-lg font-semibold mb-2 text-indigo-600 dark:text-indigo-400">Our Mission</h2>
-              <p>
-                Our mission is to empower businesses of all sizes with the high-quality, reliable, and effective tools they need to connect with their audience. We believe in building long-term relationships, turning your vision into a digital reality that delivers tangible results and lasting value.
-              </p>
-            </div>
-
-            <div>
-              <h2 class="text-lg font-semibold mb-2 text-indigo-600 dark:text-indigo-400">Our Services</h2>
-              <ul class="list-disc list-inside space-y-2">
-                <li>Custom Website Development & Hosting</li>
-                <li>Mobile App Development (iOS & Android)</li>
-                <li>E-commerce Solutions & Marketplace Setup</li>
-                <li>Professional Logo Design & Branding</li>
-                <li>Digital Strategy & Consultation</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 4. Privacy Page -->
-      <div id="page-privacy" class="page p-4 max-w-lg mx-auto">
-        <!-- Sub-page Header -->
-        <header class="relative flex items-center justify-center mb-6">
-          <button
-            class="nav-back-button absolute left-0 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
-            aria-label="Go back"
-          >
-            <!-- BackIcon -->
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-900 dark:text-white">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
-          </button>
-          <h1 class="text-xl font-bold text-gray-900 dark:text-white">Privacy Policy</h1>
-        </header>
-
-        <!-- Page Content -->
-        <div class="space-y-4 text-gray-800 dark:text-gray-200">
-          <p>Your privacy is important to us. This app is designed for your personal use.</p>
-          <p>All data, including your selected category and theme preference, is stored locally on your device using your browser's localStorage. No phone numbers, messages, or personal data is collected, transmitted, or stored by us.</p>
-          <p>This app facilitates sending messages via WhatsApp, and your interaction with WhatsApp is subject to their own privacy policy.</p>
-        </div>
-      </div>
-
-      <!-- 5. Help Page -->
-      <div id="page-help" class="page p-4 max-w-lg mx-auto">
-        <!-- Sub-page Header -->
-        <header class="relative flex items-center justify-center mb-6">
-          <button
-            class="nav-back-button absolute left-0 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
-            aria-label="Go back"
-          >
-            <!-- BackIcon -->
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-gray-900 dark:text-white">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
-          </button>
-          <h1 class="text-xl font-bold text-gray-900 dark:text-white">Help & Support</h1>
-        </header>
-
-        <!-- Page Content -->
-        <div class="space-y-4 text-gray-800 dark:text-gray-200">
-          <h2 class="text-lg font-semibold mb-2 text-indigo-600 dark:text-indigo-400">How to Use</h2>
-          <ol class="list-decimal list-inside space-y-2">
-            <li>On the 'Home' tab, select your country code.</li>
-            <li>Enter your client's phone number (without the country code).</li>
-            <li>Choose one of the three client categories. This choice is saved for future use.</li>
-            <li>Tap the 'Go to WhatsApp' button.</li>
-            <li>WhatsApp will open with the number and message pre-filled.</li>
-            <li>
-              <span class="font-bold">IMPORTANT:</span> You must manually attach your business card image before tapping 'Send'.
-            </li>
-          </ol>
-          <h2 class="text-lg font-semibold mt-6 mb-2 text-indigo-600 dark:text-indigo-400">Contact Us</h2>
-          <p>For any technical issues with this tool, please contact the development team.</p>
-        </div>
-      </div>
-
-    </main>
-    
-    <!-- Bottom Navigation -->
-    <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 w-full max-w-lg mx-auto bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-      <div class="flex justify-around items-center h-16 px-2">
+    <div class="flex-1 flex flex-col w-full max-w-lg mx-auto bg-white dark:bg-slate-900 shadow-lg overflow-hidden">
         
-        <!-- Home Button -->
-        <button
-          id="nav-home"
-          data-page="home"
-          class="nav-button flex flex-col items-center justify-center w-24 h-12"
-        >
-          <div
-            class="nav-icon-container flex items-center justify-center h-8 w-16 rounded-full bg-blue-100 dark:bg-blue-900"
-          >
-            <!-- HomeIconFilled -->
-            <svg
-              class="nav-icon w-6 h-6 text-blue-600 dark:text-blue-400"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-            </svg>
-          </div>
-          <span
-            class="nav-text text-xs font-medium text-blue-600 dark:text-blue-400"
-          >
-            Home
-          </span>
-        </button>
+        <header class="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 z-10">
+            <div id="header-content" class="flex items-center justify-between h-16 px-4">
+            </div>
+        </header>
 
-        <!-- You Button -->
-        <button
-          id="nav-you"
-          data-page="you"
-          class="nav-button flex flex-col items-center justify-center w-24 h-12"
-        >
-          <div
-            class="nav-icon-container flex items-center justify-center h-8 w-16 rounded-full bg-transparent"
-          >
-            <!-- UserIconOutline -->
-            <svg
-              class="nav-icon w-6 h-6 text-gray-600 dark:text-gray-400"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A1.875 1.875 0 0118 22.5H6.002a1.875 1.875 0 01-1.501-2.382z"
-              />
-            </svg>
-          </div>
-          <span
-            class="nav-text text-xs font-medium text-gray-600 dark:text-gray-400"
-          >
-            You
-          </span>
-        </button>
+        <main class="flex-1 overflow-y-auto pb-36">
+            
+            <div id="home-screen" class="screen p-4 active">
+                <div class="mb-6">
+                    <div class="relative">
+                        <input type_text id="search-bar" placeholder="Search for songs or artists..." class="w-full pl-10 pr-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400">
+                        <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500">
+                            <i data-lucide="search" class="lucide" style="width: 20px; height: 20px;"></i>
+                        </div>
+                    </div>
+                </div>
 
-      </div>
-    </nav>
-  </div>
+                <div class="space-y-4" id="song-list">
+                </div>
+            </div>
 
-  <script>
-    // --- Country Code Data ---
-    const countryCodes = [
-      { name: 'India', code: '+91' },
-      { name: 'Afghanistan', code: '+93' },
-      { name: 'Albania', code: '+355' },
-      { name: 'Algeria', code: '+213' },
-      { name: 'Argentina', code: '+54' },
-      { name: 'Australia', code: '+61' },
-      { name: 'Austria', code: '+43' },
-      { name: 'Bangladesh', code: '+880' },
-      { name: 'Belgium', code: '+32' },
-      { name: 'Brazil', code: '+55' },
-      { name: 'Canada', code: '+1' },
-      { name: 'Chile', code: '+56' },
-      { name: 'China', code: '+86' },
-      { name: 'Colombia', code: '+57' },
-      { name: 'Denmark', code: '+45' },
-      { name: 'Egypt', code: '+20' },
-      { name: 'France', code: '+33' },
-      { name: 'Germany', code: '+49' },
-      { name: 'Ghana', code: '+233' },
-      { name: 'Greece', code: '+30' },
-      { name: 'Indonesia', code: '+62' },
-      { name: 'Iran', code: '+98' },
-      { name: 'Iraq', code: '+964' },
-      { name: 'Ireland', code: '+353' },
-      { name: 'Italy', code: '+39' },
-      { name: 'Japan', code: '+81' },
-      { name: 'Kenya', code: '+254' },
-      { name: 'Malaysia', code: '+60' },
-      { name: 'Mexico', code: '+52' },
-      { name: 'Morocco', code: '+212' },
-      { name: 'Myanmar', code: '+95' },
-      { name: 'Nepal', code: '+977' },
-      { name: 'Netherlands', code: '+31' },
-      { name: 'New Zealand', code: '+64' },
-      { name: 'Nigeria', code: '+234' },
-      { name: 'Norway', code: '+47' },
-      { name: 'Pakistan', code: '+92' },
-      { name: 'Peru', code: '+51' },
-      { name: 'Philippines', code: '+63' },
-      { name: 'Poland', code: '+48' },
-      { name: 'Portugal', code: '+351' },
-      { name: 'Russia', code: '+7' },
-      { name: 'Saudi Arabia', code: '+966' },
-      { name: 'Singapore', code: '+65' },
-      { name: 'South Africa', code: '+27' },
-      { name: 'South Korea', code: '+82' },
-      { name: 'Spain', code: '+34' },
-      { name: 'Sri Lanka', code: '+94' },
-      { name: 'Sweden', code: '+46' },
-      { name: 'Switzerland', code: '+41' },
-      { name: 'Tanzania', code: '+255' },
-      { name: 'Thailand', code: '+66' },
-      { name: 'Turkey', code: '+90' },
-      { name: 'Uganda', code: '+256' },
-      { name: 'Ukraine', code: '+380' },
-      { name: 'United Arab Emirates', code: '+971' },
-      { name: 'United Kingdom', code: '+44' },
-      { name: 'United States', code: '+1' },
-      { name: 'Vietnam', code: '+84' },
-    ];
+            <div id="wallpapers-screen" class="screen p-4">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="wallpaper-grid">
+                </div>
+            </div>
 
-    // --- Helper Function ---
-    const generateMessage = (category) => {
-      const coupon = "LAUNCH25"; // Your coupon code
-      const commonIntro = "Hello! We are the Shridhar Group of Company, and we specialize in crafting digital solutions that build success stories.";
+            <div id="favorites-screen" class="screen p-4">
+                <div class="space-y-4" id="favorite-song-list">
+                </div>
+                <div id="no-favorites" class="hidden text-center text-slate-500 dark:text-slate-400 mt-10">
+                    <i data-lucide="heart-off" class="lucide inline-block w-12 h-12 mb-4"></i>
+                    <h3 class="text-lg font-semibold">No Favorites Yet</h3>
+                    <p class="text-sm">Tap the heart icon on any song to add it here.</p>
+                </div>
+            </div>
 
-      switch (category) {
-        case 'fresh':
-          return `${commonIntro}\n\nWe noticed your business might not have a professional website or app yet. In today's world, a beautiful online presence isn't just an option—it's the key to unlocking your full potential. We feel you might be missing out on so many customers who are searching for exactly what you offer.\n\nWe at Shridhar Group of Company pour our hearts into building stunning, fast websites and apps that don't just attract visitors, but turn them into loyal clients. Don't let your competitors capture the audience that belongs to you. Let us build the powerful online foundation your business truly deserves.\n\nReply to this message, and let's discuss getting you online! Use code *${coupon}* for a *25% DISCOUNT* on your first project with us. This is a limited-time offer to help you launch!`;
-        case 'errors':
-          return `${commonIntro}\n\nWe took a moment to visit your current website and, as fellow business enthusiasts, we saw a few areas for improvement (like load speed and mobile display) that might be causing you to lose valuable customers. Every second a visitor struggles with a page, they get closer to leaving for a competitor.\n\nOur passion at Shridhar Group of Company is transforming good websites into great ones. We can polish those rough edges, redesign the experience, or build a new app to create a flawless journey for your clients. You work too hard to lose a single customer over a technical glitch.\n\nReply to this message for a *FREE* detailed audit of your site. Use code *${coupon}* for a *25% DISCOUNT* on all our redesign and development services. Let's fix this together, today!`;
-        case 'pro':
-          return `${commonIntro}\n\nCongratulations on your professional and well-maintained website! It's clear you value your digital presence, and we truly admire that. Because you've built such a strong foundation, the clear next step to truly connect with your audience and secure their loyalty is a custom mobile app.\n\nImagine having a direct line to your best customers, right in their pocket. You can send updates, offer special deals, and create a seamless experience that a website alone just can't match. This is how you build a community, not just a customer list. This is your opportunity to lead the market in a new, powerful way.\n\nReply to this message, and let's explore how an app can supercharge your growth. Use code *${coupon}* for an exclusive *25% DISCOUNT* on app development.`;
-        default:
-          return 'Please select a category to generate a message.';
-      }
-    };
+            <div id="settings-screen" class="screen">
+                <div class="p-6 bg-indigo-50 dark:bg-slate-800 flex items-center space-x-4">
+                    <div class="w-16 h-16 rounded-full bg-indigo-500 text-white flex items-center justify-center text-2xl font-semibold">
+                        BV
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">Bhakti Viral</h2>
+                        <p class="text-slate-500 dark:text-slate-400">user@example.com</p>
+                    </div>
+                </div>
 
-    // --- App State ---
-    let currentPage = 'home';
-    let currentTheme = 'light';
-    let currentCategory = 'fresh';
+                <div class="py-4">
+                    <ul class="divide-y divide-slate-200 dark:divide-slate-800">
+                        <li id="theme-toggle-btn" class="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+                            <div class="flex items-center space-x-4">
+                                <i data-lucide="moon" class="lucide text-indigo-500 dark:text-indigo-400 settings-icon"></i>
+                                <span class="text-slate-700 dark:text-slate-300 font-medium">Dark Mode</span>
+                            </div>
+                            <div class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="theme-switch" class="sr-only peer">
+                                <div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-indigo-600"></div>
+                            </div>
+                        </li>
+                        <li class="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+                            <div class="flex items-center space-x-4">
+                                <i data-lucide="user" class="lucide text-indigo-500 dark:text-indigo-400 settings-icon"></i>
+                                <span class="text-slate-700 dark:text-slate-300 font-medium">Account Profile</span>
+                            </div>
+                            <i data-lucide="chevron-right" class="lucide text-slate-400 settings-icon"></i>
+                        </li>
+                        <li class="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+                            <div class="flex items-center space-x-4">
+                                <i data-lucide="download-cloud" class="lucide text-indigo-500 dark:text-indigo-400 settings-icon"></i>
+                                <span class="text-slate-700 dark:text-slate-300 font-medium">Download Queue</span>
+                            </div>
+                            <i data-lucide="chevron-right" class="lucide text-slate-400 settings-icon"></i>
+                        </li>
+                         <li class="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+                            <div class="flex items-center space-x-4">
+                                <i data-lucide="info" class="lucide text-indigo-500 dark:text-indigo-400 settings-icon"></i>
+                                <span class="text-slate-700 dark:text-slate-300 font-medium">About Bhakti Viral</span>
+                            </div>
+                            <i data-lucide="chevron-right" class="lucide text-slate-400 settings-icon"></i>
+                        </li>
+                        <li class="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+                            <div class="flex items-center space-x-4">
+                                <i data-lucide="log-out" class="lucide text-red-500 dark:text-red-400 settings-icon"></i>
+                                <span class="text-red-500 dark:text-red-400 font-medium">Logout</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
 
-    // --- DOM Elements ---
-    const pages = {
-      home: document.getElementById('page-home'),
-      you: document.getElementById('page-you'),
-      about: document.getElementById('page-about'),
-      privacy: document.getElementById('page-privacy'),
-      help: document.getElementById('page-help'),
-    };
-    const bottomNav = document.getElementById('bottom-nav');
-    const countryCodeSelect = document.getElementById('country-code');
-    const phoneNumberInput = document.getElementById('phone-number');
-    const goButton = document.getElementById('go-button');
-    const errorMessage = document.getElementById('error-message');
-    const errorText = document.getElementById('error-text');
-    const categoryButtons = document.querySelectorAll('.category-button');
-    const navButtons = document.querySelectorAll('.nav-button');
-    const subPageButtons = document.querySelectorAll('.nav-subpage-button');
-    const backButtons = document.querySelectorAll('.nav-back-button');
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeStatus = document.getElementById('theme-status');
-    const themeKnob = document.getElementById('theme-toggle-knob');
-    const themeIconLight = document.getElementById('theme-icon-light');
-    const themeIconDark = document.getElementById('theme-icon-dark');
-    const shareButton = document.getElementById('share-button');
+            </div>
+        </main>
 
-    // --- State Management Functions ---
+        <div id="mini-player" class="fixed bottom-16 left-0 right-0 w-full max-w-lg mx-auto bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 p-3 transform translate-y-full shadow-2xl">
+            <div class="flex items-center space-x-3">
+                <div id="player-album-art" class="w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
+                    <i data-lucide="music-4" class="lucide text-white w-6 h-6"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h4 id="player-title" class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">Song Title</h4>
+                    <p id="player-artist" class="text-xs text-slate-500 dark:text-slate-400 truncate">Artist Name</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button class="text-slate-700 dark:text-slate-300 p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <i data-lucide="skip-back" class="lucide w-5 h-5"></i>
+                    </button>
+                    <button class="text-slate-700 dark:text-slate-300 p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <i data-lucide="play" class="lucide w-6 h-6"></i>
+                    </button>
+                    <button class="text-slate-700 dark:text-slate-300 p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <i data-lucide="skip-forward" class="lucide w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-    function setPage(pageId) {
-      if (!pages[pageId]) return;
-      
-      currentPage = pageId;
+        <footer class="fixed bottom-0 left-0 right-0 w-full max-w-lg mx-auto bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+            <nav class="flex justify-around items-center h-16">
+                <button data-target="home-screen" class="nav-btn flex flex-col items-center justify-center p-2 rounded-lg w-20">
+                    <i data-lucide="home" class="lucide"></i>
+                    <span class="text-xs font-medium">Home</span>
+                </button>
+                
+                <button data-target="wallpapers-screen" class="nav-btn flex flex-col items-center justify-center p-2 rounded-lg w-20">
+                    <i data-lucide="image" class="lucide"></i>
+                    <span class="text-xs font-medium">Wallpapers</span>
+                </button>
+                
+                <button data-target="favorites-screen" class="nav-btn flex flex-col items-center justify-center p-2 rounded-lg w-20">
+                    <i data-lucide="heart" class="lucide"></i>
+                    <span class="text-xs font-medium">Favorites</span>
+                </button>
 
-      // Hide all pages
-      Object.values(pages).forEach(page => page.classList.remove('active'));
-      
-      // Show the active page
-      pages[pageId].classList.add('active');
+                <button data-target="settings-screen" class="nav-btn flex flex-col items-center justify-center p-2 rounded-lg w-20">
+                    <i data-lucide="settings" class="lucide"></i>
+                    <span class="text-xs font-medium">Settings</span>
+                </button>
+            </nav>
+        </footer>
 
-      // Update bottom nav active state
-      navButtons.forEach(button => {
-        const isButtonActive = button.dataset.page === pageId;
-        const iconContainer = button.querySelector('.nav-icon-container');
-        const icon = button.querySelector('.nav-icon');
-        const text = button.querySelector('.nav-text');
+        <div id="toast" class="fixed bottom-36 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full text-sm opacity-0 transition-opacity duration-300 z-50">
+            Feature coming soon!
+        </div>
 
-        if (isButtonActive) {
-          iconContainer.classList.add('bg-blue-100', 'dark:bg-blue-900');
-          iconContainer.classList.remove('bg-transparent');
-          icon.classList.add('text-blue-600', 'dark:text-blue-400');
-          icon.classList.remove('text-gray-600', 'dark:text-gray-400');
-          text.classList.add('text-blue-600', 'dark:text-blue-400');
-          text.classList.remove('text-gray-600', 'dark:text-gray-400');
-        } else {
-          iconContainer.classList.remove('bg-blue-100', 'dark:bg-blue-900');
-          iconContainer.classList.add('bg-transparent');
-          icon.classList.remove('text-blue-600', 'dark:text-blue-400');
-          icon.classList.add('text-gray-600', 'dark:text-gray-400');
-          text.classList.remove('text-blue-600', 'dark:text-blue-400');
-          text.classList.add('text-gray-600', 'dark:text-gray-400');
-        }
-      });
-      
-      // Show/hide bottom nav
-      if (pageId === 'home' || pageId === 'you') {
-        bottomNav.style.display = 'block';
-      } else {
-        bottomNav.style.display = 'none';
-      }
-    }
+        <div id="wallpaper-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 flex flex-col items-center justify-center p-4 opacity-0 pointer-events-none">
+            <img id="modal-img" src="" alt="Wallpaper Preview" class="max-w-full max-h-[70vh] rounded-2xl shadow-2xl mb-6">
+            <div class="flex space-x-4">
+                <button id="modal-close-btn" class="py-3 px-6 bg-white/20 text-white font-semibold rounded-full hover:bg-white/30 transition-colors">
+                    Close
+                </button>
+                <button id="modal-set-btn" class="py-3 px-6 bg-indigo-600 text-white font-semibold rounded-full hover:bg-indigo-500 transition-colors">
+                    Set Wallpaper
+                </button>
+            </div>
+        </div>
 
-    function applyTheme(theme) {
-      currentTheme = theme;
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-        themeStatus.textContent = 'Currently: Dark Mode';
-        themeKnob.classList.add('translate-x-6');
-        themeKnob.classList.remove('translate-x-1');
-        themeIconLight.classList.add('hidden');
-        themeIconDark.classList.remove('hidden');
-      } else {
-        document.documentElement.classList.remove('dark');
-        themeStatus.textContent = 'Currently: Light Mode';
-        themeKnob.classList.remove('translate-x-6');
-        themeKnob.classList.add('translate-x-1');
-        themeIconLight.classList.remove('hidden');
-        themeIconDark.classList.add('hidden');
-      }
-      localStorage.setItem('selfhelp-theme', theme);
-    }
+    </div>
 
-    function toggleTheme() {
-      applyTheme(currentTheme === 'light' ? 'dark' : 'light');
-    }
-    
-    function selectCategory(categoryId) {
-      currentCategory = categoryId;
-      localStorage.setItem('selfhelp-category', categoryId);
+    <script>
+        
+        let songs = [
+            { id: 1, title: "Vakratunda Mahakaya", artist: "Shankar Mahadevan", god: "Ganesha", isFavorite: false },
+            { id: 2, title: "Ganesh Atharvashirsha", artist: "Various Artists", god: "Ganesha", isFavorite: false },
+            { id: 3, title: "Jai Ganesh Deva", artist: "Anuradha Paudwal", god: "Ganesha", isFavorite: true },
+            { id: 4, title: "Sukhakarta Dukhaharta", artist: "Lata Mangeshkar", god: "Ganesha", isFavorite: false },
+            { id: 5, title: "Om Gan Ganpataye Namo Namah", artist: "Suresh Wadkar", god: "Ganesha", isFavorite: false },
+            { id: 6, title: "Gajananam Bhutaganadi Sevitam", artist: "Various Artists", god: "Ganesha", isFavorite: false },
+            { id: 7, title: "Sindhoora Varnaya", artist: "S. P. Balasubrahmanyam", god: "Ganesha", isFavorite: false },
+            { id: 8, title: "Om Namo Venkatesaya", artist: "S. P. Balasubrahmanyam", god: "Venkateshwara", isFavorite: true },
+            { id: 9, title: "Balaji Mantra", artist: "Various Artists", god: "Venkateshwara", isFavorite: false },
+            { id: 10, title: "Govinda Namalu", artist: "M. S. Subbulakshmi", god: "Venkateshwara", isFavorite: false },
+            { id: 11, title: "Sri Venkateswara Suprabhatam", artist: "M. S. Subbulakshmi", god: "Venkateshwara", isFavorite: false },
+            { id: 12, title: "Tirumala Vasa", artist: "S. Janaki", god: "Venkateshwara", isFavorite: false },
+            { id: 13, title: "Venkatesha Stotram", artist: "Priya Sisters", god: "Venkateshwara", isFavorite: false },
+            { id: 14, title: "Poojyaya Raghavendraya", artist: "Various Artists", god: "Raghavendra", isFavorite: false },
+            { id: 15, title: "Raghavendra Swamy Songs", artist: "K. J. Yesudas", god: "Raghavendra", isFavorite: false },
+            { id: 16, title: "Guru Raghavendra", artist: "Rajkumar", god: "Raghavendra", isFavorite: false },
+            { id: 17, title: "Om Sri Raghavendraya Namaha", artist: "Various Artists", god: "Raghavendra", isFavorite: false },
+            { id: 18, title: "Hanuman Chalisa", artist: "Hariharan", god: "Hanuman", isFavorite: true },
+            { id: 19, title: "Shri Ram Jai Ram", artist: "Various Artists", god: "Rama", isFavorite: false },
+            { id: 20, title: "Om Namah Shivaya", artist: "Krishna Das", god: "Shiva", isFavorite: false },
+            { id: 21, title: "Mahamrityunjay Mantra", artist: "Shankar Sahney", god: "Shiva", isFavorite: false },
+            { id: 22, title: "Gayatri Mantra", artist: "Anuradha Paudwal", god: "Gayatri", isFavorite: true },
+            { id: 23, title: "Achyutam Keshavam", artist: "Vikram Hazra", god: "Krishna", isFavorite: false },
+            { id: 24, title: "Govinda Bolo Hari Gopala Bolo", artist: "Suresh Wadkar", god: "Krishna", isFavorite: false },
+            { id: 25, title: "Radhe Krishna Radhe Shyam", artist: "Various Artists", god: "Krishna", isFavorite: false },
+            { id: 26, title: "Shiva Tandava Stotram", artist: "Shankar Mahadevan", god: "Shiva", isFavorite: false },
+            { id: 27, title: "Lingashtakam", artist: "Various Artists", god: "Shiva", isFavorite: false },
+            { id: 28, title: "Om Jai Jagdish Hare", artist: "Lata Mangeshkar", god: "Vishnu", isFavorite: false },
+            { id: 29, title: "Vishnu Sahasranamam", artist: "M. S. Subbulakshmi", god: "Vishnu", isFavorite: false },
+            { id: 30, title: "Raghupati Raghav Raja Ram", artist: "Various Artists", god: "Rama", isFavorite: false },
+            { id: 31, title: "Sri Ramachandra Kripalu", artist: "Lata Mangeshkar", god: "Rama", isFavorite: false },
+            { id: 32, title: "Anjaneya Stuti", artist: "S. P. Balasubrahmanyam", god: "Hanuman", isFavorite: false },
+            { id: 33, title: "Sri Anjaneyam", artist: "Various Artists", god: "Hanuman", isFavorite: false },
+            { id: 34, title: "Lakshmi Gayatri Mantra", artist: "Various Artists", god: "Lakshmi", isFavorite: false },
+            { id: 35, title: "Mahalakshmi Ashtakam", artist: "Bombay Sisters", god: "Lakshmi", isFavorite: false },
+            { id: 36, title: "Om Jai Lakshmi Mata", artist: "Anuradha Paudwal", god: "Lakshmi", isFavorite: false },
+            { id: 37, title: "Saraswati Vandana", artist: "Various Artists", god: "Saraswati", isFavorite: false },
+            { id: 38, title: "Ya Kundendu", artist: "Lata Mangeshkar", god: "Saraswati", isFavorite: false },
+            { id: 39, title: "Durga Chalisa", artist: "Anuradha Paudwal", god: "Durga", isFavorite: false },
+            { id: 40, title: "Om Aim Hrim Klim", artist: "Various Artists", god: "Durga", isFavorite: false },
+            { id: 41, title: "Adithya Hrudayam", artist: "S. P. Balasubrahmanyam", god: "Surya", isFavorite: false },
+            { id: 42, title: "Surya Ashtakam", artist: "Various Artists", god: "Surya", isFavorite: false },
+            { id: 43, title: "Shani Mantra", artist: "Suresh Wadkar", god: "Shani", isFavorite: false },
+            { id: 44, title: "Kali Mantra", artist: "Various Artists", god: "Kali", isFavorite: false },
+            { id: 45, title: "Subramanya Suprabhatam", artist: "Various Artists", god: "Murugan", isFavorite: false },
+            { id: 46, title: "Kanda Shashti Kavasam", artist: "Soolamangalam Sisters", god: "Murugan", isFavorite: false },
+            { id: 47, title: "Aigiri Nandini", artist: "Various Artists", god: "Durga", isFavorite: false },
+            { id: 48, title: "Navagraha Stotram", artist: "Various Artists", god: "Navagraha", isFavorite: false },
+            { id: 49, title: "Datta Stavam", artist: "Various Artists", god: "Dattatreya", isFavorite: false },
+            { id: 50, title: "Shri Swami Samarth", artist: "Suresh Wadkar", god: "Swami Samarth", isFavorite: false },
+        ];
 
-      categoryButtons.forEach(button => {
-        const isSelected = button.dataset.category === categoryId;
-        const radioIcon = button.querySelector('.radio-icon');
-        const radioDot = button.querySelector('.radio-dot');
+        const wallpapers = [
+            { god: "Ganesha", color: "fde68a" },
+            { god: "Venkateshwara", color: "c7d2fe" },
+            { god: "Raghavendra", color: "fecaca" },
+            { god: "Hanuman", color: "fdba74" },
+            { god: "Shiva", color: "bae6fd" },
+            { god: "Krishna", color: "bbf7d0" },
+            { god: "Rama", color: "a5f3fc" },
+            { god: "Lakshmi", color: "fbcfe8" },
+            { god: "Saraswati", color: "e9d5ff" },
+            { god: "Durga", color: "fca5a5" },
+            { god: "Kali", color: "a3a3a3" },
+            { god: "Murugan", color: "fda4af" },
+            { god: "Vishnu", color: "93c5fd" },
+            { god: "Surya", color: "facc15" },
+            { god: "Shani", color: "57534e" },
+            { god: "Parvati", color: "f9a8d4" },
+            { god: "Dattatreya", color: "d8b4fe" },
+            { god: "Swami Samarth", color: "f59e0b" },
+        ];
 
-        if (isSelected) {
-          button.classList.add('bg-indigo-50', 'dark:bg-indigo-900', 'border-indigo-500', 'ring-2', 'ring-indigo-500');
-          button.classList.remove('bg-white', 'dark:bg-gray-800', 'border-gray-300', 'dark:border-gray-600', 'hover:bg-gray-50', 'dark:hover:bg-gray-700');
-          radioIcon.classList.add('bg-indigo-600', 'border-indigo-600');
-          radioIcon.classList.remove('border-gray-400');
-          radioDot.classList.remove('hidden');
-        } else {
-          button.classList.remove('bg-indigo-50', 'dark:bg-indigo-900', 'border-indigo-500', 'ring-2', 'ring-indigo-500');
-          button.classList.add('bg-white', 'dark:bg-gray-800', 'border-gray-300', 'dark:border-gray-600', 'hover:bg-gray-50', 'dark:hover:bg-gray-700');
-          radioIcon.classList.remove('bg-indigo-600', 'border-indigo-600');
-          radioIcon.classList.add('border-gray-400');
-          radioDot.classList.add('hidden');
-        }
-      });
-    }
+        let currentActiveScreen = 'home-screen';
 
-    // --- Event Handlers ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const screens = document.querySelectorAll('.screen');
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const headerContent = document.getElementById('header-content');
+            const songListContainer = document.getElementById('song-list');
+            const wallpaperGridContainer = document.getElementById('wallpaper-grid');
+            const favSongListContainer = document.getElementById('favorite-song-list');
+            const noFavoritesMessage = document.getElementById('no-favorites');
+            const toast = document.getElementById('toast');
+            const miniPlayer = document.getElementById('mini-player');
+            const playerTitle = document.getElementById('player-title');
+            const playerArtist = document.getElementById('player-artist');
+            const wallpaperModal = document.getElementById('wallpaper-modal');
+            const modalImg = document.getElementById('modal-img');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const modalSetBtn = document.getElementById('modal-set-btn');
+            const searchBar = document.getElementById('search-bar');
+            const themeToggleBtn = document.getElementById('theme-toggle-btn');
+            const themeSwitch = document.getElementById('theme-switch');
 
-    function handleGoClick() {
-      const phone = phoneNumberInput.value.trim();
-      const country = countryCodeSelect.value;
-      
-      // Basic validation
-      if (!phone) {
-        showError('Please enter a phone number.');
-        return;
-      }
-      if (!/^\d+$/.test(phone)) {
-        showError('Phone number must contain only digits.');
-        return;
-      }
-      if (!currentCategory) {
-        showError('Please select a client category.');
-        return;
-      }
+            const headers = {
+                'home-screen': `
+                    <h1 class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">Bhakti Viral</h1>
+                    <button class="text-slate-500 dark:text-slate-400 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <i data-lucide="bell" class="lucide w-6 h-6"></i>
+                    </button>
+                `,
+                'wallpapers-screen': `
+                    <h1 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Wallpapers</h1>
+                    <button class="text-slate-500 dark:text-slate-400 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <i data-lucide="download" class="lucide w-6 h-6"></i>
+                    </button>
+                `,
+                'favorites-screen': `
+                    <h1 class="text-2xl font-bold text-slate-800 dark:text-slate-100">My Favorites</h1>
+                    <div class="w-10"></div>
+                `,
+                'settings-screen': `
+                    <h1 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Settings</h1>
+                    <div class="w-10"></div>
+                `
+            };
 
-      // Clear error
-      hideError();
+            function showToast(message) {
+                toast.textContent = message;
+                toast.classList.remove('opacity-0');
+                setTimeout(() => {
+                    toast.classList.add('opacity-0');
+                }, 2000);
+            }
 
-      // Format number and message
-      const fullNumber = country.replace('+', '') + phone;
-      const message = generateMessage(currentCategory);
-      const encodedMessage = encodeURIComponent(message);
+            function setActiveScreen(targetId) {
+                currentActiveScreen = targetId;
+                screens.forEach(screen => {
+                    screen.classList.remove('active');
+                });
+                document.getElementById(targetId).classList.add('active');
 
-      // Open WhatsApp
-      const url = `https://wa.me/${fullNumber}?text=${encodedMessage}`;
-      window.open(url, '_blank');
-    }
-    
-    function handleShare() {
-      if (navigator.share) {
-        navigator.share({
-          title: 'SelfHelp - CS App',
-          text: 'Check out this helpful app for client messaging!',
-          url: window.location.href,
-        }).catch((error) => console.log('Error sharing', error));
-      } else {
-        // Fallback for browsers that don't support navigator.share
-        // In a real app, you might show a modal with the link to copy
-        console.log("Share API not supported. Link to copy: " + window.location.href);
-      }
-    }
+                navButtons.forEach(btn => {
+                    if (btn.dataset.target === targetId) {
+                        btn.classList.add('text-indigo-600', 'dark:text-indigo-400');
+                        btn.classList.remove('text-slate-500', 'dark:text-slate-400');
+                    } else {
+                        btn.classList.remove('text-indigo-600', 'dark:text-indigo-400');
+                        btn.classList.add('text-slate-500', 'dark:text-slate-400');
+                    }
+                });
 
-    function showError(message) {
-      errorText.textContent = message;
-      errorMessage.classList.remove('hidden');
-    }
+                headerContent.innerHTML = headers[targetId];
+                lucide.createIcons();
 
-    function hideError() {
-      errorMessage.classList.add('hidden');
-    }
+                if (targetId === 'favorites-screen') {
+                    populateFavorites();
+                }
+            }
 
-    // --- Initialization ---
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    setActiveScreen(btn.dataset.target);
+                });
+            });
+            
+            function createSongCard(song) {
+                const favIcon = song.isFavorite 
+                    ? `<i data-lucide="heart" class="lucide w-5 h-5 text-red-500" fill="currentColor"></i>`
+                    : `<i data-lucide="heart" class="lucide w-5 h-5 text-slate-400 dark:text-slate-500"></i>`;
+                
+                return `
+                    <div class="flex items-center bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
+                        <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center mr-4">
+                            <i data-lucide="music-3" class="lucide text-white"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-semibold text-slate-800 dark:text-slate-100 truncate">${song.title}</h3>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 truncate">${song.artist}</p>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <button class="fav-btn p-3 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700" data-song-id="${song.id}">
+                                ${favIcon}
+                            </button>
+                            <button class="play-btn p-3 rounded-full text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-700" data-song-id="${song.id}">
+                                <i data-lucide="play-circle" class="lucide w-6 h-6"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
 
-    function initialize() {
-      // 1. Load and apply theme
-      const savedTheme = localStorage.getItem('selfhelp-theme') || 'light';
-      applyTheme(savedTheme);
+            function populateSongs(filter = '') {
+                songListContainer.innerHTML = '';
+                const filteredSongs = songs.filter(song => 
+                    song.title.toLowerCase().includes(filter) || 
+                    song.artist.toLowerCase().includes(filter) ||
+                    song.god.toLowerCase().includes(filter)
+                );
+                
+                filteredSongs.forEach(song => {
+                    songListContainer.innerHTML += createSongCard(song);
+                });
+                lucide.createIcons();
+            }
 
-      // 2. Load and apply category
-      const savedCategory = localStorage.getItem('selfhelp-category') || 'fresh';
-      selectCategory(savedCategory);
+            function populateFavorites() {
+                favSongListContainer.innerHTML = '';
+                const favoriteSongs = songs.filter(song => song.isFavorite);
 
-      // 3. Populate country codes
-      countryCodes.forEach(country => {
-        const option = document.createElement('option');
-        option.value = country.code;
-        option.textContent = `${country.name} (${country.code})`;
-        if (country.name === 'India') {
-          option.selected = true;
-        }
-        countryCodeSelect.appendChild(option);
-      });
-      
-      // 4. Set initial page
-      setPage('home');
+                if (favoriteSongs.length === 0) {
+                    noFavoritesMessage.classList.remove('hidden');
+                } else {
+                    noFavoritesMessage.classList.add('hidden');
+                    favoriteSongs.forEach(song => {
+                        favSongListContainer.innerHTML += createSongCard(song);
+                    });
+                }
+                lucide.createIcons();
+            }
 
-      // 5. Attach all event listeners
-      goButton.addEventListener('click', handleGoClick);
-      themeToggle.addEventListener('click', toggleTheme);
-      shareButton.addEventListener('click', handleShare);
-      
-      navButtons.forEach(button => {
-        button.addEventListener('click', () => setPage(button.dataset.page));
-      });
-      
-      categoryButtons.forEach(button => {
-        button.addEventListener('click', () => selectCategory(button.dataset.category));
-      });
-      
-      subPageButtons.forEach(button => {
-        button.addEventListener('click', () => setPage(button.dataset.page));
-      });
-      
-      backButtons.forEach(button => {
-        button.addEventListener('click', () => setPage('you'));
-      });
-    }
+            function populateWallpapers() {
+                wallpapers.forEach(wp => {
+                    const imgSrc = `https://placehold.co/360x640/${wp.color}/333333?text=${wp.god}`;
+                    const wallpaperCard = `
+                        <div class="relative aspect-[9/16] rounded-2xl shadow-lg overflow-hidden group cursor-pointer wallpaper-card" data-img-src="${imgSrc}" data-img-alt="${wp.god} Wallpaper">
+                            <img src="${imgSrc}" 
+                                 alt="${wp.god} Wallpaper" 
+                                 class="w-full h-full object-cover"
+                                 onerror="this.src='https://placehold.co/360x640/e2e8f0/94a3b8?text=Image+Not+Found'">
+                            
+                            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            </div>
+                            <div class="absolute bottom-2 left-2 bg-black/40 text-white text-xs font-semibold px-2 py-1 rounded-full">
+                                ${wp.god}
+                            </div>
+                        </div>
+                    `;
+                    wallpaperGridContainer.innerHTML += wallpaperCard;
+                });
+            }
+            
+            function playSong(songId) {
+                const song = songs.find(s => s.id === parseInt(songId));
+                if (song) {
+                    playerTitle.textContent = song.title;
+                    playerArtist.textContent = song.artist;
+                    miniPlayer.classList.add('active');
+                }
+            }
+            
+            function toggleFavorite(songId, buttonElement) {
+                const song = songs.find(s => s.id === parseInt(songId));
+                if (song) {
+                    song.isFavorite = !song.isFavorite;
+                    const favIcon = song.isFavorite 
+                        ? `<i data-lucide="heart" class="lucide w-5 h-5 text-red-500" fill="currentColor"></i>`
+                        : `<i data-lucide="heart" class="lucide w-5 h-5 text-slate-400 dark:text-slate-500"></i>`;
+                    buttonElement.innerHTML = favIcon;
+                    lucide.createIcons();
+                    
+                    if (currentActiveScreen === 'favorites-screen') {
+                        populateFavorites();
+                    }
+                }
+            }
 
-    // Run initialization when the DOM is fully loaded
-    document.addEventListener('DOMContentLoaded', initialize);
+            function showWallpaperModal(src, alt) {
+                modalImg.src = src;
+                modalImg.alt = alt;
+                wallpaperModal.classList.remove('opacity-0', 'pointer-events-none');
+            }
 
-  </script>
+            function hideWallpaperModal() {
+                wallpaperModal.classList.add('opacity-0', 'pointer-events-none');
+            }
+            
+            document.body.addEventListener('click', (e) => {
+                const playBtn = e.target.closest('.play-btn');
+                if (playBtn) {
+                    playSong(playBtn.dataset.songId);
+                }
+                
+                const favBtn = e.target.closest('.fav-btn');
+                if (favBtn) {
+                    toggleFavorite(favBtn.dataset.songId, favBtn);
+                }
+
+                const wallpaperCard = e.target.closest('.wallpaper-card');
+                if (wallpaperCard) {
+                    showWallpaperModal(wallpaperCard.dataset.imgSrc, wallpaperCard.dataset.imgAlt);
+                }
+                
+                if (e.target.closest('#settings-screen li') && !e.target.closest('#theme-toggle-btn')) {
+                    showToast('Feature coming soon!');
+                }
+            });
+            
+            modalCloseBtn.addEventListener('click', hideWallpaperModal);
+            modalSetBtn.addEventListener('click', () => {
+                showToast('Wallpaper set (simulation)');
+                hideWallpaperModal();
+            });
+            
+            searchBar.addEventListener('input', (e) => {
+                populateSongs(e.target.value.toLowerCase());
+            });
+
+            function setDarkMode(isDark) {
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                    themeSwitch.checked = true;
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    themeSwitch.checked = false;
+                }
+            }
+
+            themeToggleBtn.addEventListener('click', () => {
+                setDarkMode(!document.documentElement.classList.contains('dark'));
+            });
+            
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setDarkMode(true);
+            } else {
+                setDarkMode(false);
+            }
+
+            populateSongs();
+            populateWallpapers();
+            setActiveScreen('home-screen');
+            
+            lucide.createIcons();
+        });
+    </script>
 </body>
 </html>
